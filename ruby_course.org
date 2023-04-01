@@ -8,9 +8,9 @@ https://ruby-doc.org/
 https://github.com/rbenv/rbenv
 - on arch instal install rbenv from AUR
 - put this on zshrc or bashrc
-  echo 'eval "$(~/.rbenv/bin/rbenv init - zsh)"' >> ~/.zshrc
-  echo 'eval "$(~/.rbenv/bin/rbenv init - bash)"' >> ~/.bashrc
-  echo 'eval "$(~/.rbenv/bin/rbenv init - bash)"' >> ~/.bash_profile
+  + echo 'eval "$(~/.rbenv/bin/rbenv init - zsh)"' >> ~/.zshrc
+  + echo 'eval "$(~/.rbenv/bin/rbenv init - bash)"' >> ~/.bashrc
+  + echo 'eval "$(~/.rbenv/bin/rbenv init - bash)"' >> ~/.bash_profile
 - rbenv install -l
   rbenv install 3.1.2
 - rbenv global 3.1.2
@@ -91,6 +91,7 @@ https://github.com/rbenv/rbenv
 
 * Variables
 https://www.theodinproject.com/lessons/ruby-variables
+https://launchschool.com/books/ruby/read/variables
 #+begin_src ruby
   age = 18
   age += 4 #=> 22
@@ -116,3 +117,23 @@ https://www.theodinproject.com/lessons/ruby-variables
   name = "John"
   can_swim = false
 #+end_src
+
+** Variables are References
+The information you name with a variable is stored in memory on your computer, so a variable is effectively a reference or a pointer to that address in memory. This is important to know as it can sometimes be the cause of unexpected behavior from your code.
+
+** Types of Variables
+#+begin_src ruby
+  MY_CONSTANT = 'I am available throughout your app.'
+  $var = 'I am also available throughout your app.'
+  @@instances = 0
+  @var = 'I am available throughout the current instance of this class.'
+  var = 'I must be passed around to cross scope boundaries.'
+#+end_src
+
+* Input And Output
+https://www.theodinproject.com/lessons/ruby-input-and-output
+
+
+* Conditional Logic
+https://www.theodinproject.com/lessons/ruby-conditional-logic
+
