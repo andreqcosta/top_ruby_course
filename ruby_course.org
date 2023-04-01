@@ -1,0 +1,118 @@
+* How This Course Will Work
+https://www.theodinproject.com/lessons/ruby-how-this-course-will-work  
+
+https://ruby-doc.org/
+
+* Installing Ruby
+** install rbenv
+https://github.com/rbenv/rbenv
+- on arch instal install rbenv from AUR
+- put this on zshrc or bashrc
+  echo 'eval "$(~/.rbenv/bin/rbenv init - zsh)"' >> ~/.zshrc
+  echo 'eval "$(~/.rbenv/bin/rbenv init - bash)"' >> ~/.bashrc
+  echo 'eval "$(~/.rbenv/bin/rbenv init - bash)"' >> ~/.bash_profile
+- rbenv install -l
+  rbenv install 3.1.2
+- rbenv global 3.1.2
+  
+* Basic Data Types
+** string
+*** concat
+#+begin_src ruby
+  # With the plus operator:
+  "Welcome " + "to " + "Odin!"    #=> "Welcome to Odin!"
+
+  # With the shovel operator:
+  "Welcome " << "to " << "Odin!"  #=> "Welcome to Odin!"
+
+  # With the concat method:
+  "Welcome ".concat("to ").concat("Odin!")  #=> "Welcome to Odin!"
+#+end_src
+
+*** substrings
+#+begin_src ruby
+  "hello"[0]      #=> "h"
+
+  "hello"[0..1]   #=> "he"
+
+  "hello"[0, 4]   #=> "hell"
+
+  "hello"[-1]     #=> "o"
+#+end_src
+
+*** common methods
+#+begin_src ruby
+  #capitalize
+
+  "hello".capitalize #=> "Hello"
+  #include?
+
+  "hello".include?("lo")  #=> true
+
+  "hello".include?("z")   #=> false
+  #upcase
+
+  "hello".upcase  #=> "HELLO"
+  #downcase
+
+  "Hello".downcase  #=> "hello"
+  #empty?
+
+  "hello".empty?  #=> false
+
+  "".empty?       #=> true
+  #length
+
+  "hello".length  #=> 5
+  #reverse
+
+  "hello".reverse  #=> "olleh"
+  #split
+
+  "hello world".split  #=> ["hello", "world"]
+
+  "hello".split("")    #=> ["h", "e", "l", "l", "o"]
+  #strip
+
+  " hello, world   ".strip  #=> "hello, world"
+
+  #modify string
+
+  "he77o".sub("7", "l")           #=> "hel7o"
+
+  "he77o".gsub("7", "l")          #=> "hello"
+
+  "hello".insert(-1, " dude")     #=> "hello dude"
+
+  "hello world".delete("l")       #=> "heo word"
+
+  "!".prepend("hello, ", "world") #=> "hello, world!"
+#+end_src
+
+* Variables
+https://www.theodinproject.com/lessons/ruby-variables
+#+begin_src ruby
+  age = 18
+  age += 4 #=> 22
+
+  age = 18
+  age -= 2  #=> 16
+
+  cash = 10
+  cash *= 2 #=> 20
+
+  temperature = 40
+  temperature /= 10 #=> 4
+#+end_src
+
+** naming
+#+begin_src ruby
+  # bad
+  a = 19
+  string = "John"
+
+  # good
+  age = 19
+  name = "John"
+  can_swim = false
+#+end_src
