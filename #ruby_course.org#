@@ -468,6 +468,7 @@ You will sometimes encounter built-in Ruby methods that have a question mark (?)
 
 * Debugging
 https://www.theodinproject.com/lessons/ruby-debugging
+https://github.com/deivid-rodriguez/pry-byebug
 ** pry-byebug
 #+begin_src ruby :tangle prybue.rb
   require 'pry-byebug'
@@ -507,3 +508,6 @@ https://www.theodinproject.com/lessons/ruby-debugging
 [4] pry(main)> name
 => "BOB"
 #+end_src
+
+* Basic Enumerable Methods
+https://www.theodinproject.com/lessons/ruby-basic-enumerable-methods
