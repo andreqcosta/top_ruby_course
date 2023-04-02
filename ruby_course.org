@@ -133,7 +133,354 @@ The information you name with a variable is stored in memory on your computer, s
 * Input And Output
 https://www.theodinproject.com/lessons/ruby-input-and-output
 
-
 * Conditional Logic
 https://www.theodinproject.com/lessons/ruby-conditional-logic
+https://launchschool.com/books/ruby/read/flow_control#conditionals
+#+begin_src ruby
+  5.eql?(5.0) #=> false; although they are the same value, one is an integer and the other is a float
+  5.eql?(5)   #=> true
 
+  a = 5
+  b = 5
+  a.equal?(b) #=> true
+
+  a = "hello"
+  b = "hello"
+  a.equal?(b) #=> false
+
+  5 <=> 10    #=> -1
+  10 <=> 10   #=> 0
+  10 <=> 5    #=> 1
+#+end_src
+
+** case
+#+begin_src ruby
+  grade = 'F'
+
+  did_i_pass = case grade #=> create a variable `did_i_pass` and assign the result of a call to case with the variable grade passed in
+	       when 'A' then "Hell yeah!"
+	       when 'D' then "Don't tell your mother."
+	       else "'YOU SHALL NOT PASS!' -Gandalf"
+	       end
+
+#+end_src
+
+#+begin_src ruby
+  grade = 'F'
+
+  case grade
+  when 'A'
+    puts "You're a genius"
+    future_bank_account_balance = 5_000_000
+  when 'D'
+    puts "Better luck next time"
+    can_i_retire_soon = false
+  else
+    puts "'YOU SHALL NOT PASS!' -Gandalf"
+    fml = true
+  end
+#+end_src
+
+* Loops
+https://www.theodinproject.com/lessons/ruby-loops
+https://launchschool.com/books/ruby/read/loops_iterators
+
+** loop
+#+begin_src ruby
+  i = 0
+  loop do
+    puts "i is #{i}"
+    i += 1
+    break if i == 10
+  end
+#+end_src
+
+** do/while
+#+begin_src ruby
+  begin
+    puts "Do you want to do that again?"
+    answer = gets.chomp
+  end while answer == 'Y'
+#+end_src
+
+** while
+#+begin_src ruby
+  i = 0
+  while i < 10 do
+    puts "i is #{i}"
+    i += 1
+  end
+#+end_src
+
+#+begin_src ruby
+  while gets.chomp != "yes" do
+    puts "Will you go to prom with me?"
+  end
+#+end_src
+
+** until
+#+begin_src ruby
+  i = 0
+  until i >= 10 do
+    puts "i is #{i}"
+    i += 1
+  end
+#+end_src
+
+#+RESULTS:
+: nil
+
+#+begin_src ruby
+  until gets.chomp == "yes" do
+    puts "Do you like Pizza?"
+  end
+#+end_src
+
+** times
+#+begin_src ruby
+  5.times do
+    puts "Hello, world!"
+  end
+
+  5.times do
+    puts "Hello, world!"
+  end
+#+end_src
+
+** upto and downto
+#+begin_src ruby
+  5.upto(10) {|num| print "#{num} " }     #=> 5 6 7 8 9 10
+
+  10.downto(5) {|num| print "#{num} " }   #=> 10 9 8 7 6 5
+#+end_src
+
+* Array
+https://www.theodinproject.com/lessons/ruby-arrays
+** creating
+#+begin_src ruby
+  num_array = [1, 2, 3, 4, 5]
+  str_array = ["This", "is", "a", "small", "array"]
+
+  Array.new               #=> []
+  Array.new(3)            #=> [nil, nil, nil]
+  Array.new(3, 7)         #=> [7, 7, 7]
+  Array.new(3, true)      #=> [true, true, true]
+#+end_src
+
+** accessing elements
+#+begin_src ruby
+  str_array = ["This", "is", "a", "small", "array"]
+
+  str_array[0]            #=> "This"
+  str_array[1]            #=> "is"
+  str_array[4]            #=> "array"
+  str_array[-1]           #=> "array"
+  str_array[-2]           #=> "small"
+
+  str_array = ["This", "is", "a", "small", "array"]
+
+  str_array.first         #=> "This"
+  str_array.first(2)      #=> ["This", "is"]
+  str_array.last(2)       #=> ["small", "array"]
+#+end_src
+
+** adding and removing elements
+#+begin_src ruby
+  num_array = [1, 2]
+
+  num_array.push(3, 4)      #=> [1, 2, 3, 4]
+  num_array << 5            #=> [1, 2, 3, 4, 5]
+  num_array.pop             #=> 5
+  num_array                 #=> [1, 2, 3, 4]
+#+end_src
+
+#+begin_src ruby
+  num_array = [2, 3, 4]
+
+  num_array.unshift(1)      #=> [1, 2, 3, 4]
+  num_array.shift           #=> 1
+  num_array                 #=> [2, 3, 4]
+#+end_src
+
+#+begin_src ruby
+  num_array = [1, 2, 3, 4, 5, 6]
+
+  num_array.pop(3)          #=> [4, 5, 6]
+  num_array.shift(2)        #=> [1, 2]
+  num_array  
+#+end_src
+
+** adding and subtracting arrays
+#+begin_src ruby
+  a = [1, 2, 3]
+  b = [3, 4, 5]
+
+  a + b         #=> [1, 2, 3, 3, 4, 5]
+  a.concat(b)   #=> [1, 2, 3, 3, 4, 5]
+#+end_src
+
+#+begin_src ruby
+  [1, 1, 1, 2, 2, 3, 4] - [1, 4]  #=> [2, 2, 3]
+#+end_src
+
+** basic array methods
+#+begin_src ruby
+  [].empty?               #=> true
+  [[]].empty?             #=> false
+  [1, 2].empty?           #=> false
+
+  [1, 2, 3].length        #=> 3
+
+  [1, 2, 3].reverse       #=> [3, 2, 1]
+
+  [1, 2, 3].include?(3)   #=> true
+  [1, 2, 3].include?("3") #=> false
+
+  [1, 2, 3].join          #=> "123"
+  [1, 2, 3].join("-")     #=> "1-2-3"
+#+end_src
+
+* Hash
+https://www.theodinproject.com/lessons/ruby-hashes
+https://launchschool.com/books/ruby/read/hashes
+** creating hashes
+#+begin_src ruby
+  my_hash = {
+    "a random word" => "ahoy",
+    "Dorothy's math test score" => 94,
+    "an array" => [1, 2, 3],
+    "an empty hash within a hash" => {}
+  }
+#+end_src
+
+#+begin_src ruby
+  my_hash = Hash.new
+  my_hash               #=> {}
+
+  hash = { 9 => "nine", :six => 6 }
+#+end_src
+
+** accessing values
+#+begin_src ruby
+  shoes = {
+    "summer" => "sandals",
+    "winter" => "boots"
+  }
+
+  shoes["summer"]   #=> "sandals"
+
+  shoes["hiking"]   #=> nil
+
+  shoes.fetch("hiking")   #=> KeyError: key not found: "hiking"
+
+  shoes.fetch("hiking", "hiking boots") #=> "hiking boots"
+#+end_src
+
+** adding and changing data
+#+begin_src ruby
+  shoes["fall"] = "sneakers"
+
+  shoes     #=> {"summer"=>"sandals", "winter"=>"boots", "fall"=>"sneakers"}
+
+  shoes["summer"] = "flip-flops"
+  shoes     #=> {"summer"=>"flip-flops", "winter"=>"boots", "fall"=>"sneakers"}
+#+end_src
+
+** removing data
+#+begin_src ruby
+  shoes.delete("summer")    #=> "flip-flops"
+  shoes                     #=> {"winter"=>"boots", "fall"=>"sneakers"}
+#+end_src
+
+** methods
+#+begin_src ruby
+  books = {
+    "Infinite Jest" => "David Foster Wallace",
+    "Into the Wild" => "Jon Krakauer"
+  }
+
+  books.keys      #=> ["Infinite Jest", "Into the Wild"]
+  books.values    #=> ["David Foster Wallace", "Jon Krakauer"]
+
+#+end_src
+
+** merging two hashes
+#+begin_src ruby
+  hash1 = { "a" => 100, "b" => 200 }
+  hash2 = { "b" => 254, "c" => 300 }
+  hash1.merge(hash2)      #=> { "a" => 100, "b" => 254, "c" => 300 }
+#+end_src
+
+** symbols and hash keys
+#+begin_src ruby
+  # 'Rocket' syntax
+  american_cars = {
+    :chevrolet => "Corvette",
+    :ford => "Mustang",
+    :dodge => "Ram"
+  }
+  # 'Symbols' syntax
+  japanese_cars = {
+    honda: "Accord",
+    toyota: "Corolla",
+    nissan: "Altima"
+  }
+
+  american_cars[:ford]    #=> "Mustang"
+  japanese_cars[:honda]   #=> "Accord"
+#+end_src
+
+* Mehtods
+https://www.theodinproject.com/lessons/ruby-methods
+** chaining methods
+#+begin_src ruby
+  phrase = ["be", "to", "not", "or", "be", "to"]
+
+  puts phrase.reverse.join(" ").capitalize
+  #=> "To be or not to be"
+
+  ["be", "to", "not", "or", "be", "to"].reverse
+  = ["to", "be", "or", "not", "to", "be"].join(" ")
+  = "to be or not to be".capitalize
+  = "To be or not to be"
+#+end_src
+
+** predicate methods
+You will sometimes encounter built-in Ruby methods that have a question mark (?) at the end of their name, such as even?, odd?, or between?. These are all predicate methods, which is a naming convention that Ruby uses for methods that return a Boolean, that is, they return either true or false.
+#+begin_src ruby
+  puts 5.even?  #=> false
+  puts 6.even?  #=> true
+  puts 17.odd?  #=> true
+
+  puts 12.between?(10, 15)  #=> true
+#+end_src
+
+** bang methods
+#+begin_src ruby
+  whisper = "HELLO EVERYBODY"
+
+  puts whisper.downcase #=> "hello everybody"
+  puts whisper #=> "HELLO EVERYBODY"
+
+  puts whisper.downcase! #=> "hello everybody"
+  puts whisper #=> "hello everybody"
+#+end_src
+
+* Debugging
+https://www.theodinproject.com/lessons/ruby-debugging
+** pry-byebug
+#+begin_src ruby
+  require 'pry-byebug'
+
+  def isogram?(string)
+    original_length = string.length
+    string_array = string.downcase.split
+
+    binding.pry
+
+    unique_length = string_array.uniq.length
+    original_length == unique_length
+  end
+
+  isogram?("Odin")
+#+end_src
