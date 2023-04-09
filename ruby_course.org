@@ -468,6 +468,7 @@ You will sometimes encounter built-in Ruby methods that have a question mark (?)
 
 * Debugging
 https://www.theodinproject.com/lessons/ruby-debugging
+https://github.com/deivid-rodriguez/pry-byebug
 ** pry-byebug
 #+begin_src ruby :tangle prybue.rb
   require 'pry-byebug'
@@ -507,3 +508,273 @@ https://www.theodinproject.com/lessons/ruby-debugging
 [4] pry(main)> name
 => "BOB"
 #+end_src
+
+* Basic Enumerable Methods
+https://www.theodinproject.com/lessons/ruby-basic-enumerable-methods
+
+#+begin_src ruby
+  fruits = ["apple", "banana", "strawberry", "pineapple"]
+
+  fruits.each_with_index { |fruit, index| puts fruit if index.even? }
+
+  #=> apple
+  #=> strawberry
+  #=> ["apple", "banana", "strawberry", "pineapple"]
+#+end_src
+
+#+begin_src ruby
+  votes = ["Bob's Dirty Burger Shack", "St. Mark's Bistro", "Bob's Dirty Burger Shack"]
+
+  votes.reduce(Hash.new(0)) do |result, vote|
+    result[vote] += 1
+    result
+  end
+  #=> {"Bob's Dirty Burger Shack"=>2, "St. Mark's Bistro"=>1}
+#+end_src
+
+* Object Oriented Programming
+https://www.theodinproject.com/lessons/ruby-object-oriented-programming
+https://launchschool.com/books/oo_ruby/read/the_object_model
+
+https://opensource.guide/how-to-contribute/#why-contribute-to-open-source
+
+https://www.eriktrautman.com/posts/ruby-explained-classes
+
+http://ruby.bastardsbook.com/chapters/exception-handling/
+http://regex.bastardsbook.com/
+
+https://rubystyle.guide/
+
+- Encapsulation
+- Polymorphism
+- inheritance
+
+.class return class
+
+** Module (mixins)
+#+begin_src ruby
+  module Speak
+    def speak(sound)
+      puts sound
+    end
+  end
+
+  class GoodDog
+    include Speak
+  end
+
+  class HumanBeing
+    include Speak
+  end
+
+  sparky = GoodDog.new
+  sparky.speak("Arf!")        # => Arf!
+  bob = HumanBeing.new
+  bob.speak("Hello!")         # => Hello!
+#+end_src
+
+.ancestors see parents
+
+When you start solving larger problems organization is key. You don't want 100 different methods and variables that do overlapping things. If you're trying to keep track of data (like a bunch of bad guys in a game you're building), you want to do so in the most organized way possible so you can recycle methods and only need to update that data in one place at a time.
+
+
+#+begin_src ruby
+  def health
+    @health
+  end
+
+  def health=(new_health)
+    @health = new_health
+  end
+
+  class Viking
+    attr_accessor :name, :age, :health, :strength
+    # codecodecode
+  end  
+#+end_src
+
+self
+#+begin_src ruby
+  class Viking
+	...
+	def take_damage(damage)
+	  self.health -= damage
+	  # OR we could have said @health -= damage
+	  self.shout("OUCH!")
+	end
+    def shout(str)
+      puts str
+    end
+    ...
+  end
+#+end_src
+
+
+class variable
+#+begin_src ruby
+  class Viking
+    @@starting_health
+    def initialize(name, age, strength)
+      @health = @@starting_health
+      # ...other stuff
+    end
+  end
+#+end_src
+
+
+factory method
+#+begin_src ruby
+  class Viking
+    def initialize(name, health, age, strength)
+      #... set variables
+    end
+    def self.create_warrior(name)
+      age = rand * 20 + 15   # remember, rand gives a random 0 to 1
+      health = [age * 5, 120].min
+      strength = [age / 2, 10].min
+      Viking.new(name, health, age, strength)  # returned
+    end
+  end
+
+  sten = Viking.create_warrior("Sten")
+#+end_src
+
+#+begin_src ruby
+  class Viking
+	...
+	def self.random_name      # useful for making new warriors!
+	  ["Erik","Lars","Leif"].sample
+	end
+    def self.silver_to_gold(silver_pieces)
+      silver_pieces / 10
+    end
+    class << self           # The less common way
+      def gold_to_silver(gold_pieces)
+	gold_pieces * 10
+      end
+    end
+  end
+
+  warrior1 = Viking.create_warrior(Viking.random_name)
+
+#+end_src
+
+#+begin_src ruby
+  class Person
+    MAX_HEALTH = 120
+		 ...
+		 def heal
+		   self.health += 1 unless self.health + 1 > MAX_HEALTH
+		 end
+  end
+
+  class Viking < Person
+	...
+	def heal
+	  self.health = [self.health + 2, MAX_HEALTH].min
+	  puts "Ready for battle!"
+	end
+  end
+
+  class Viking < Person
+	...
+	def heal
+	  2.times { super }
+	  puts "Ready for battle!"
+	end
+  end
+
+  class Viking < Person
+    def initialize(name, health, age, strength, weapon)
+      super(name, health, age, strength)
+      @weapon = weapon
+    end
+  end
+#+end_src
+
+#+begin_src ruby
+  class Viking < Person
+	...
+	def take_damage(damage)
+	  @health -= damage
+	  die if @health <= 0
+	end
+    private
+    def die
+      puts "#{self.name} has been killed :("
+      self.dead = true    # assume we've defined a `dead` instance variable
+    end
+  end
+
+  > oleg = Viking.create_warrior("Oleg")
+  > oleg.die
+  NoMethodError: private method `die' called for #<Viking:0x007ffd4c041e50>
+  > oleg.take_damage(200)
+  Oleg has been killed :(
+  => true
+#+end_src
+
+You should change the default thought in your head from "everything is accessible, what do I need to hide?" to "everything should be hidden, what do I absolutely need to make externally available?" That principle will take you far, especially when designing things like APIs that will be used by other programs. The more you make available to people, the harder it will be later on to hide it again.
+
+#+begin_src ruby
+  class Viking < Person
+	...
+	def attack(recipient)
+	  if recipient.dead
+	    puts "#{recipient.name} is already dead!"
+	    return false
+	  end
+	  damage = (rand * 10 + 10).round(0)
+	  recipient.take_damage(damage)  # `take_damage` called on `recipient`!
+	end
+    protected
+    def take_damage(damage)
+      self.health -= damage
+      puts "Ouch! #{self.name} took #{damage} damage and has #{self.health} health left"
+      die if @health <= 0  
+      # `die` called from within the same object as take_damage was (the `recipient` as well!)
+    end
+    private
+    def die
+      puts "#{self.name} has been killed :("
+      self.dead = true  # assume we've defined a `dead` instance variable
+    end
+  end
+
+  > oleg = Viking.create_warrior("Oleg")
+  => #<Viking:0x007ffd4b8b5588 @age=24.58111251562904, @name="Oleg", @health=120, @strength=10, @dead=false> 
+  > sten = Viking.create_warrior("Sten")
+  => #<Viking:0x007ffd4b8e1700 @age=28.80998656037281, @name="Sten", @health=120, @strength=10, @dead=false> 
+  > 10.times { oleg.attack(sten) }
+  Ouch! Sten took 19 damage and has 101 health left
+  Ouch! Sten took 10 damage and has 91 health left
+  Ouch! Sten took 13 damage and has 78 health left
+  Ouch! Sten took 17 damage and has 61 health left
+  Ouch! Sten took 15 damage and has 46 health left
+  Ouch! Sten took 11 damage and has 35 health left
+  Ouch! Sten took 14 damage and has 21 health left
+  Ouch! Sten took 14 damage and has 7 health left
+  Ouch! Sten took 18 damage and has -11 health left
+  Sten has been killed :(
+			   Sten is already dead!
+			   => 10 
+			   > sten
+			   => #<Viking:0x007ffd4c048840 @age=25.601709008134428, @name="Sten", @health=-11, @strength=10, @dead=true>
+#+end_src
+
+
+rescue
+#+begin_src ruby
+  a = 10
+  b = "42"
+
+  begin
+    a + b
+  rescue
+    puts "Could not add variables a (#{a.class}) and b (#{b.class})"
+  else
+    puts "a + b is #{a + b}"
+  end
+
+#+end_src
+
